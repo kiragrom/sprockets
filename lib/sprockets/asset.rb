@@ -65,7 +65,11 @@ module Sprockets
     #
     # Returns String.
     def digest_path
-      logical_path.sub(/\.(\w+)$/) { |ext| "-#{etag}#{ext}" }
+      if DigestUtils.already_digested?(@name)
+        logical_path
+      else
+        logical_path.sub(/\.(\w+)$/) { |ext| "-#{etag}#{ext}" }
+      end
     end
 
     # Public: Returns String MIME type of asset. Returns nil if type is unknown.
